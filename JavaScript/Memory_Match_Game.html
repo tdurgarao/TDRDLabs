@@ -1,1 +1,431 @@
 
+<html>
+ <head>
+ <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+  <!-- link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"  -->
+  <!-- script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script -->
+  <!-- script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script-->
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+ 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+   
+<title> Memory Match Game</title>
+</head>
+
+
+<body onload="generateTable()">
+<script>
+
+ //source arary with sequence numbers 
+ var arrFileNumbers=[],arrNum2UseForImg=[], arrNum2Check=[];
+ var intCounter = 0, myTimeInterval , myImgTimeHandle , intImgTimerOn=0;  //to loop thur the array when the items buttons are clicked
+ var intValue2Disp =0, intRows, intColumns , intTotalElements , intFile2Show, intDoneImgCount=0;
+ var intCurCellNo, intPreviousCellNo,strPreviousCell,intTimeLapsed=0, intVsibleImgs=0;
+ var strFirst="", strSecond="", strImg2UseInTimer, intNoOfTries=0, intDoneCount=0;
+ var intLoopCounter=0;
+ const setSourceNum = new Set();
+ const intAvailablePicsCount = 30;
+ const intImgTimeInterval=300;
+ 
+ const arrImgs = [
+ "add_a_photo","add_to_photos","adjust","assistant_photo","audiotrack"
+ ,"blur_circular" ,"wb_sunny","healing","gradient","filter_vintage"
+ ,"filter_none" ,"filter_frames","exposure" ,"wb_cloudy","timer_off"
+ ,"switch_video","remove_red_eye" ,"picture_as_pdf","photo_library","photo_camera"
+ ,"dashboard"   ,"movie_filter","monochrome_photos","linked_camera","image"
+ ,"control_point_duplicate","compare","collections_bookmark","camera_roll","camera"
+   ];
+   
+  const arrColors = ["red","green","blue"] ; // ,"navy","meroon" ];
+//27,8,25,2,10,2,23,21,5,4,7,23,27,25,7,4,8,10,21,5-text-1
+  
+ //https://www.w3schools.com/icons/google_icons_action.asp
+  //const strTopImgName = "top.jpg", strDoneImgName="done.jpg";
+   const strTopImgName = "crop_din", strDoneImgName="";
+ const strImgPath ="r/durgarao/135945/files/static/v4/"
+//const  strTopImgURL= strImgPath+strTopImgName, strDoneImgURL=strImgPath +strDoneImgName;
+const  strTopImgURL= strTopImgName, strDoneImgURL="done";
+ //  r/durgarao/135945/files/static/v4/top.jpg
+
+ function swapImages(e){
+   //alert(  "style" + e.style + " innerText " + e.innerText+" - "+ + intImgTimerOn  +"--e.src --"+ e.src  + "--- e.id---"+  e.id + "---strDoneImgName---*"+ strDoneImgName + "*---strTopImgName---"+ strTopImgName  );
+  //  alert(  " innerText--" + e.innerText+  "--strTopImgName--"+ strTopImgName  );
+
+
+ ///////if  ( intImgTimerOn ==0 &&  e.src.match(strTopImgName) ){ 
+ //alert(  'aaat  1 intImgTimerOn -' + intImgTimerOn  + '-e.innerText==' +   e.innerText + '--strTopImgName--'+ strTopImgName + ' --e.id-- ' + e.id );
+ if  ( intImgTimerOn ==0 &&  (e.innerText==strTopImgName) ){ 
+ 
+//  alert(   2 );
+ 
+ //alert(   intCounter );
+   if  (intTimeLapsed==0) { 
+ // alert(   3 );
+       //  document.getElementById("timeCompleted").innerHTML = "<strong>Time:"+ ++intTimeLapsed + "</strong>";
+         document.getElementById("timeCompleted").innerHTML =   ++intTimeLapsed ;
+      
+	  myTimeInterval  = setInterval(startTimer,500);	
+      }
+    intCounter++;
+  //alert(   4 ); 
+
+  // var get = document.getElementById(e);  
+ //newImage.setAttribute("src","imgs/" +arrFileNumbers[intValue2Disp] + ".jpg");
+ intCurCellNo= e.id;
+intFile2Show = arrImgs[arrFileNumbers[e.id]]; 
+
+   /////////////strPreviousCell =e.src ;  
+   strPreviousCell =e.id ;  
+    //  alert(intCurCellNo+"--intCurCellNo" +"--intFile2Show--"+intFile2Show+"--strPreviousCell--"+ strPreviousCell);
+
+     //document.getElementById("intFile2Show").innerHTML ="before --" + e.src  +"-e.id="+ e.id  + "-value in e.id="+ intFile2Show;
+    //alert(  'e.innerText----'+    e.innerText +'== strTopImgName --'+   strTopImgName ); 
+ //if (e.src.match(strTopImgName))
+ if ((e.innerText==strTopImgName)) 
+ {
+ 
+         //alert   ( 'in if 1111--' +intFile2Show);
+
+  // e.src =strImgPath +intFile2Show + ".jpg";
+  
+     e.innerText= intFile2Show ; //"crop_din";//arrNum2PrintOnBtn[intValue2Disp ] ; // "0"+intValue2Disp  ;
+ 	  //intValue2Disp++; //i + "-" +j;
+	   //e.setAttribute("id",arrNum2UseForImg[intValue2Disp]);
+        //alert   ( 'xxx' + newBtn.getAttribute("id"));
+       //e.setAttribute("onClick","swapImages( this)");
+      e.setAttribute("class","material-icons");
+	  e.setAttribute("style","font-size:64px;color:GREEN"); 
+  }
+ else{  alert   ( 'in else   333' );
+ 
+   e.innerText=strTopImgName ;// "crop_din";//arrNum2PrintOnBtn[intValue2Disp ] ; // "0"+intValue2Disp  ;
+ 	  //intValue2Disp++; //i + "-" +j;
+	   e.setAttribute("id",arrNum2UseForImg[intValue2Disp]);
+      // alert   ( newBtn.getAttribute("id"));
+    //   e.setAttribute("onClick","swapImages( this)");
+      e.setAttribute("class","material-icons");
+	  e.setAttribute("style","font-size:64px;color:green"); 
+  // e.src =strTopImgURL;
+   } 
+   
+  // document.getElementById("toGoDiv").innerHTML =  "<br>after --"+e.src  +"----<br> previous"+ strFirst   + "-*-"+ intFile2Show+"<br>-intVsibleImgs-"+intVsibleImgs+"<br>--strPreviousCell--"+strPreviousCell;
+
+ // alert( "e.innerText--" + e.innerText  + "--strTopImgName--" + strTopImgName +  "strFirst="+strFirst + "-e.src -" + e.src );
+  //   alert(  e.src  +"-"+ e.id  + "-"+ intFile2Show);
+	 if (strFirst =="") {
+	  // alert( strFirst + " is null-22222-"+ intFile2Show);
+ 
+     //// strFirst=e.src;
+      strFirst=e.innerText;
+	  intVsibleImgs++;
+	  intPreviousCellNo=e.id;
+		  // alert( "intVsibleImgs-"+ intVsibleImgs  + " -intPreviousCellNo-"+ intPreviousCellNo);
+  
+	  
+	  }
+	  else 
+	    if (e.innerText  != strTopImgName && strFirst == e.innerText )
+ 		  { 
+		   //alert (strFirst +"=33333="+ e.src);
+		  strFirst="";
+		 strImg2UseInTimer=strDoneImgURL;
+         myImgTimeHandle  = setInterval(startImgTimer,intImgTimeInterval);
+         intImgTimerOn=1;
+			strFirst="";
+		intVsibleImgs=0;	 
+		intDoneImgCount++;
+          document.getElementById("NoOfTries").innerHTML =   ++intNoOfTries ;
+          document.getElementById("doneCount").innerHTML =   ++intDoneCount ;
+		        e.setAttribute("class","material-icons");
+	  e.setAttribute("style","font-size:64px;color:green"); 
+		  
+		    if (intDoneImgCount == intTotalElements  / 2){
+                clearInterval(myTimeInterval );
+            }
+ 		}
+		else {
+	
+	 	 //intPreviousCellNo=e.id;	
+	   //  alert('else 44444 -'+intPreviousCellNo);
+		 strFirst="";
+		 intVsibleImgs=0;
+		 //document.getElementById(intPreviousCellNo).src="imgs/" +"top.jpg";
+		 //alert('p'+intPreviousCellNo);
+         //e.src = "imgs/" +"top.jpg"; 
+		 strImg2UseInTimer=strTopImgURL;
+         myImgTimeHandle  = setInterval(startImgTimer,intImgTimeInterval);
+         intImgTimerOn=1;	
+         		        e.setAttribute("class","material-icons");
+	  e.setAttribute("style","font-size:64px;color:green"); 	
+          document.getElementById("NoOfTries").innerHTML =   ++intNoOfTries ;
+		 
+		}
+ // alert('intImgTimerOn'+intImgTimerOn);
+  //  document.getElementById("doneDiv").innerHTML =  "<br>--intPreviousCellNo--"+intPreviousCellNo ;
+ }
+}  
+function startImgTimer() {
+ 
+	//	 document.getElementById(intPreviousCellNo).src=strImg2UseInTimer;
+ 
+  //   		 document.getElementById(intCurCellNo).src=strImg2UseInTimer ;
+ 		 document.getElementById(intPreviousCellNo).innerText=strImg2UseInTimer;
+ 
+     		 document.getElementById(intCurCellNo).innerText=strImg2UseInTimer ;
+intImgTimerOn=0;
+  clearInterval(myImgTimeHandle );
+}
+
+	function startTimer() 
+	  {  
+          document.getElementById("timeCompleted").innerHTML =   ++intTimeLapsed ;
+      }
+	  
+   //suffle the array 
+  function shuffleArray(array) {
+   for (var i = array.length - 1; i > 0; i--) { 
+  
+       // Generate random number 
+       var j = Math.floor(Math.random() * (i + 1));
+                  
+       var temp = array[i];
+       array[i] = array[j];
+       array[j] = temp;
+    }      
+    return array;
+  } 
+  
+  function generateTable() {
+   
+
+   //intSuffleOrSeq = Math.floor((Math.random() *10) + 1); 
+
+   intRows =Math.floor(Math.random() * (8 - 2)  + 2);
+   intColumns   =Math.floor(Math.random() * (10 - 2)  + 2);
+    
+   
+ // below code checks if the genearated number is even or not, if not then loop until an even number is genearated
+//   while ( (intRows  *  intColumns) % 2 == 1  ||  (intRows  *  intColumns)<8 )
+   //{
+//      intRows =Math.floor(Math.random() * (10 - 2)  + 2);
+//   intColumns   =Math.floor(Math.random() * (10 - 2)  + 2);
+  // 
+//   }
+ 
+
+//  alert ( "-intRows-"+intRows  +"-intColumns-"+intColumns  );
+    ////document.getElementById("numsGenerated").innerHTML =    "-intRows-"+intRows  +"-intColumns-"+intColumns+ "---"+ Math.min(intRows, intColumns,1) +"aaa";
+//      document.getElementById("NoOfPairs").innerHTML =    "-intRows-"+intRows  +"-intColumns-"+intColumns +"---"+ Math.min(intRows, intColumns,1) +"aaa";
+
+              //    document.getElementById("NoOfPairs").innerHTML =   intRows +  "--aa--" +  intColumns;
+
+intRows = Math.max(intRows,3 ) ;
+intRows = Math.min(intRows,6 ) ;
+
+
+intColumns = Math.max(intColumns,3 ) ;
+
+//  alert ( "-intRows-"+intRows  +"-intColumns-"+intColumns  );
+
+  if  (  intRows  *  intColumns == 9 )
+    {
+      //alert ( intRows  ||"*"||  intColumns);
+       intRows =intRows  + 1 ;
+       // intColumns   =intColumns + 3 ;
+    
+    }
+//	  alert ( "-intRows-"+intRows  +"-intColumns-"+intColumns  );
+
+while   ( (intRows  *  intColumns) >=48 ||  (intRows  *  intColumns) % 2 == 1  )
+   {
+  	   //alert ( intLoopCounter);   
+	   //alert ( intRows  ||"*"||  intColumns);
+       intRows--;
+       intColumns-- ;
+	   
+       //intLoopCounter ++;
+       //if (intLoopCounter >5) {
+	   //   intRows = 4;
+       //intColumns = 4 ;   
+	   //break;
+	  // }
+	   
+
+   }
+ //      alert ( "-intRows-aaaa"+intRows  +"-intColumns-"+intColumns  );
+
+   
+//sometimes the above loop is getting into infinite loop, so logic is changed to add 1 to the odd number 
+ if  ( (intRows  *  intColumns) % 2 == 1  ||  (intRows  *  intColumns)<8 )
+   {
+     //alert ( intRows  ||"*"||  intColumns);
+      intRows =intRows  + 1 ;
+       intColumns   =intColumns + 3 ;
+   
+   }
+
+      
+       // alert ( "-intRows-"+intRows  +"-intColumns-"+intColumns  );
+
+   
+   
+  //  intRows =2;
+  // intColumns   =3;
+   
+   // alert(intColumns +"-"+intRows);
+ 
+   intTotalElements =    intRows * intColumns; 
+  //  alert ( setSourceNum.size +"-size-"+intTotalElements/2);
+
+
+ var a_del=0;
+ 
+    while (setSourceNum.size != intTotalElements  / 2  ) {
+	     // alert ( setSourceNum.size +"-size-"+intTotalElements/2+ "-y-"+ y );
+
+	 //for ( i=0; i< (intTotalElements) / 2 ; i++ ) {
+	 let x = Math.floor(Math.random() *  (intAvailablePicsCount -1));
+	 //Math.floor(Math.random() * (i + 1))
+	    //alert ("x = " + x );
+
+     setSourceNum.add(x);
+	 
+	 a_del++;
+   }
+   
+           document.getElementById("NoOfPairs").innerHTML =   intTotalElements/2;
+
+       ////        document.getElementById("NoOfPairs").innerHTML =   intRows +  "--aa--" +  intColumns;
+ // alert ( setSourceNum.size +"-values got generated ");
+
+ let text = "";
+  
+setSourceNum.forEach (function(value) {
+
+  text += value +"-";
+  arrFileNumbers[intCounter]= value;
+  arrFileNumbers[intCounter +(intTotalElements  / 2)]= value;
+  arrNum2UseForImg[intCounter]=intCounter;
+    arrNum2UseForImg[intCounter+(intTotalElements  / 2)]=intCounter+(intTotalElements  / 2);
+
+intCounter++; 
+})
+     
+    arrFileNumbers = shuffleArray(arrFileNumbers);
+
+ 
+  
+     document.getElementById("printTable").innerHTML =   
+	 "<table   border=0 bordercolor=red width=100%>   <tr>     <td   >  </td>      <td width=30>         <table id = tbl2print  border=10 bordercolor=maroon; width=100%> 	    <tr><td   >  </td> </tr>  	  </table>    </td>     <td width=45%	>  </td>    </tr> </table> ";
+	 
+     let tbl = document.getElementById ('tbl2print');
+
+ 
+
+  // creating all cells
+  for (let i = 0; i < intRows  ; i++) {
+    // creates a table row
+    const row = document.createElement("tr");
+
+    for (let j = 0; j < intColumns; j++) {
+      // Create a <td> element and a text node, make the text
+      // node the contents of the <td>, and put the <td> at
+      // the end of the table row
+      const cell = document.createElement("td");
+ 
+let newImage = document.createElement('img'); 
+newImage.setAttribute("id", arrNum2UseForImg[intValue2Disp] );
+ newImage.setAttribute("src",
+ 
+
+"<i class='material-icons' style='font-size:64px;color:blue'>add_a_photo</i>"
+);
+
+ 
+      let newBtn = document.createElement('lable');
+      newBtn.innerText= "crop_din";//arrNum2PrintOnBtn[intValue2Disp ] ; // "0"+intValue2Disp  ;
+ 	  //intValue2Disp++; //i + "-" +j;
+	   newBtn.setAttribute("id",arrNum2UseForImg[intValue2Disp]);
+      // alert   ( newBtn.getAttribute("id"));
+      newBtn.setAttribute("onClick","swapImages( this)");
+      newBtn.setAttribute("class","material-icons");
+	  newBtn.setAttribute("style","font-size:64px;color:blue"); 
+	  
+	        cell.appendChild(newBtn);
+
+ intValue2Disp++;
+ 
+      row.appendChild(cell);
+    }
+
+    // add the row to the end of the table body
+    tbl.appendChild(row);
+  }
+
+  // put the <tbody> in the <table>
+  tbl.appendChild(tbl);
+  // appends <table> into <body>
+  document.body.appendChild(tbl);
+  // sets the border attribute of tbl to '2'
+  tbl.setAttribute("border", "2");
+}
+</script>
+
+
+<!-- input type="button" value="Generate a table" onclick="generateTable()" / --> 
+  
+<table border =0  bordercolor=blue  >
+
+<tr>  
+
+<td>  <table  border=2 bordercolor=green style="background-color:#ED7D31;" width=100%> <tr> <td> 
+
+<center> <table   style="background-color:#ED7D31;"> <tr> 
+<td width=80px style="background-color:#053f5c;  border: 0px solid black;
+  border-radius: 6px;"><center>   <font size=2 color=white> Pairs </font>
+  <lable id="NoOfPairs"  style=" size:3 ;color:#ffff00">    00  </font> </lable>	 </center> </td>
+  <td  width=80px  style="background-color:#0B5395;  border: 0px solid black;
+  border-radius: 6px;"> <center> <font size=2 color=white> Done </font>  	
+  <lable id="doneCount"  style=" size:3 ;color:#ffff00"> 00  </lable>	 </center> </td>
+  <td width=80px  style="background-color:#82695E;  border: 0px solid black;
+  border-radius: 6px;"><center> <font size=2 color=white> Tries </font> 	
+  <lable id="NoOfTries"  style=" size:3 ;color:#ffff00"> 00   </lable>	 </center>  </td>
+  <td width=80px  style="background-color:#B01513;  border: 0px solid black;
+  border-radius: 6px;"> <center>  <font size=2 color=white> Time </font>  	
+  <lable id="timeCompleted"  style=" size:3 ;color:#ffff00">00  </lable></center> 	</td> 
+  </td> </tr> </table> </center> 
+  
+   </td> </tr> </table>
+  </tr> 
+
+<tr> <td vertical-align: middle; colspan=4> <center>
+                  
+<table style=" background-color: #A3CEED; 
+   background-image: conic-gradient(#D2EFFA, #ffffff,#A3CEED,#ffffff,#A8ECEF ,#ffffff);
+
+"> <tr> <td> 
+<div id="printTable"  >   </div>
+<div id="numsGenerated"  >   </div>
+
+</center>  </td> </tr> </table>
+	</td> </tr> </table>
+	
+	  
+</body>
+ 
+ </html>
+  
