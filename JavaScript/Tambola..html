@@ -1,0 +1,615 @@
+<head> 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>  
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+ <STYLE>
+
+.no_border {
+	border-width: 0px;
+	text-align: center;
+}
+
+#cache {
+	margin: 0px;
+}
+
+.temp2 {
+	font-size: 20px;
+	margin-top: 20px;
+}
+
+#number {
+	text-align: center;
+}
+
+#number_para {
+	font-size: 650%;
+	padding-top: 60px;
+	padding-left: 0px;
+	height: 250px;
+}
+.circle {
+	border-style: solid;
+	border-color: coral;
+	border-radius: 50%;
+	width: 250px;
+	height: 250px;
+	border-width: thick;
+}
+#random,#button2 {
+	margin-top: 8%;
+	font-size: 170%;
+	font-family: "Comic Sans MS";
+	display: block;
+	padding: 8px 20px;
+	background: linear-gradient(#67ae55, #578843);
+	background-color: #69a74e;
+	box-shadow: inset 0 1px 1px #a4e388;
+	border-color: #3b6e22 #3b6e22 #2c5115;
+	border-width: thin;
+	border-radius: 5px;
+	color: #fff;
+	text-shadow: 0 1px 2px rgba(0,0,0,.5);
+}
+#button2 {
+	font-size: 140%;
+	padding: 4px 15px;
+}
+.content {
+	margin-top: 5%;
+	padding-bottom: 30px;
+}
+#gameover {
+	padding-top: 10%;
+	font-size: 200%;
+	padding-bottom:-10%;
+}
+@media (max-width:4500px) {
+	td {
+		padding: 0px;
+		padding-top: 3px;
+		width: 30px;
+		text-align: center;
+		font-weight: bold;
+		height: 30px;
+		font-size: 90%;
+	}
+	#button2 {
+		font-size: 140%;
+		margin-top: 3	0px;
+	}
+}
+@media (min-width:400px) and (max-width:650px) {
+	td {
+		padding-top: 4px;
+		width: 30px;
+		text-align: center;
+		font-weight: bold;
+		height: 40px;
+		font-size: 120%;
+	}
+	#button2 {
+		font-size: 140%;
+		margin-top: 40px;
+	}
+}
+@media (min-width:650px) and (max-width:1200px) {
+	td {
+		padding-top: 4px;
+		width: 30px;
+		text-align: center;
+		font-weight: bold;
+		height: 60px;
+		font-size: 170%;
+	}
+	#button2 {
+		font-size: 140%;
+		margin-top: 50px;
+	}
+	#random {
+		margin-top: 4%;
+	}
+}
+@media (min-width:1200px) {
+	td {
+		padding-top: 4px;
+		width: 30px;
+		text-align: center;
+		font-weight: bold;
+		height: 100%;
+		font-size: 170%;
+	}
+	#button2 {
+		margin-top: 22%;
+		font-size: 140%;
+	}
+	#random {
+		margin-top: 11%;
+	}
+}
+ 
+ .alt_cell_color{
+	background-color: #B4C7E7;
+	text-align: center;
+}
+.main_cell_color{
+	background-color: #2F5597;
+	text-align: center;
+}
+
+ .x{
+	background-color: #ffff00;
+}
+
+.1row_attributes  { height:12px ;}
+
+
+
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 24px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(36px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 16px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+ </STYLE>
+
+<script type="text/javascript">
+var v_array = new Array()
+var v_array2print = new Array()
+var v_index =0; 
+var v_str2print='';
+const v_num2generate = 90; 
+var v_timer = 1;
+var v_timer_name ;
+var v_pause_timer=0;
+
+function doHouseKeeping() {
+let table = document.getElementById("num_90");
+
+
+for(var i=0;i<9;++i) {
+	for(var j=0;j<10;j++) {
+		table.rows[i].cells[j].innerText = "-";
+	}
+}
+
+
+	 document.getElementById("curr_num").innerHTML = '<font size=6 color=yellow > 00</font>'   ; // v_row  +'-'+ v_column;
+	 document.getElementById("completed").innerHTML =  '' + 0 + ' ' ; // v_row  +'-'+ v_column;
+	 document.getElementById("to_go").innerHTML =  ' ' + 90 + ' ' ; // v_row  +'-'+ v_column;
+
+
+}
+function PrintTable() {
+ 
+
+var x;
+	var v_row,v_column;
+	var v_winSpeech = window.speechSynthesis;
+	var v_random_value = Math.floor(Math.random()  * v_num2generate)+ 1;
+	
+	while (v_array.indexOf(v_random_value) !== -1) {
+    // code block to be executed
+	var v_random_value = Math.floor(Math.random()  * v_num2generate)+ 1;
+}
+
+if(v_array.indexOf(v_random_value) !== -1)  
+{  
+        alert("Yes, the value exists!")  
+}   
+else  
+{  
+      //  alert("No, the value is absent.")  
+}  
+  
+ 	
+	var v_msg = new SpeechSynthesisUtterance(v_random_value);
+	v_msg.pitch = 3;
+	v_winSpeech.speak(v_msg); 
+	let table = document.getElementById("num_90");
+	//alert(v_random_value +  ' a ' + v_random_value);
+
+	v_row = parseInt(v_random_value / 10);
+	v_column = parseInt(v_random_value % 10);
+	if (v_column == 0) 
+	  { 
+	    v_column  = 10;
+		v_row = v_row-1; 
+	  }
+	v_array[v_array.length]= v_random_value;
+	v_array2print[v_array2print.length]= v_random_value;
+	v_str2print = v_str2print +' ' + v_random_value;
+	
+    if (v_array2print.length % 16 == 0  )
+	  { 
+  	    v_array2print[v_array2print.length]= '<br>';
+	  	v_str2print = v_str2print +'<br> ' ; 
+	  }
+
+	v_index = v_index + 1;
+	
+
+	//document.getElementById("nums").innerHTML =  document.getElementById("nums").innerHTML +'-'+ v_random_value;
+	 //document.getElementById("nums").innerHTML =  v_array2print.toString; //document.getElementById("nums").innerHTML +'-'+ v_random_value;
+     document.getElementById("nums").innerHTML = '<font size=2 color=blue>' + v_str2print + '</font> ';
+	  document.getElementById("curr_num").innerHTML =  '<font size=6 color=white >' + v_random_value + '</font>' ; // 
+	// document.getElementById("curr_num").innerHTML =    v_random_value   ; // 
+	 
+	 
+	 v_row  +'-'+ v_column;
+	 document.getElementById("completed").innerHTML =  ' ' + v_array.length + ' ' ; // v_row  +'-'+ v_column;
+	 document.getElementById("to_go").innerHTML =  ' ' + (v_num2generate - v_index)  + ' ' ; // v_row  +'-'+ v_column;
+
+
+ 
+		//alert(v_row +  ' a ' + v_column);
+	table.rows[v_row].cells[v_column-1].innerText = v_random_value;
+	 table.rows[v_row].cells[v_column-1].style.backgroundColor = "#F7B20E";
+	if (v_array.length== 90)
+	  {
+	    document.getElementById("btnNumberGen").disabled = true;
+        clearInterval(v_timer_name);
+        document.getElementById("btnStartTheTimer").disabled = true;
+
+	  }
+	  
+	//  const element = document.querySelector( table.rows[v_row].cells[v_column-1] );
+//element.classList.add('x');
+	}
+	
+	function doNothing () {  //alert('double clicked');
+    };
+
+	
+	function  StartStopTimer()
+	{
+	  //alert(1);
+	 
+	 
+	 	var v_label =  document.getElementById("btnStartTheTimer").textContent;
+		//alert(v_label);
+		if (v_label =='Stop' )
+		  {
+            document.getElementById("btnStartTheTimer").textContent  = 'Auto Run';
+            clearInterval(v_timer_name);
+			document.getElementById("time_completed").innerHTML = 0;
+            document.getElementById("chkPauseStartTimer").checked = false ;
+ 
+            v_pause_timer = (0 == v_pause_timer);
+            v_timer=0;
+			 var div = document.getElementById("pause_timer");
+             div.style.visibility = "hidden";
+			 var div = document.getElementById("timer_limit");
+             div.style.visibility = "hidden";		  
+			 var div = document.getElementById("time_completed");
+             div.style.visibility = "hidden";		
+		  }
+		else
+          {   		 
+            document.getElementById("btnStartTheTimer").textContent  = 'Stop';
+			 var div = document.getElementById("pause_timer");
+             div.style.visibility = "visible";
+ 
+			 var div = document.getElementById("timer_limit");
+             div.style.visibility = "visible";
+			 
+			 var div = document.getElementById("time_completed");
+             div.style.visibility = "visible";			 
+			v_pause_timer=0;
+			v_timer=1;		
+			document.getElementById("time_completed").innerHTML = '<font color=yellow> Time</font> <font color=white> ' + v_timer + ' </font> ';
+		    v_timer_name = setInterval(startTimer,1000);	
+			
+			document.getElementById("chkPauseStartTimer").checked = true;
+			document.getElementById("autoRefrshStatus").innerHTML = 'Auto Refresh On';
+	
+			}
+	}
+		
+	function startTimer() 
+	  {  
+        if (v_pause_timer==1) { }
+        else  
+		  {		
+  	        if (v_timer >= document.getElementById("txtTimerLimit").value)
+		      { 
+		        v_timer = 0; 
+                PrintTable();
+	          }
+               v_timer = v_timer + 1;
+ 	          document.getElementById("time_completed").innerHTML =  '<font color=yellow> Time</font> <font color=white> ' + v_timer + ' </font> ';
+
+	      }
+      }
+	
+	function PauseStartTimer()
+	{
+	  v_pause_timer = (0 == v_pause_timer);
+	  //alert( v_pause_timer);
+	  if ( v_pause_timer) 
+        { 	    document.getElementById("autoRefrshStatus").innerHTML = 'Auto Refresh Off';
+ }
+      else 
+	  {
+	    document.getElementById("autoRefrshStatus").innerHTML = 'Auto Refresh On';
+   		
+      }
+	}
+	
+</script> 
+</head>
+
+ <body onload="doHouseKeeping()"   ondblclick ="doNothing(event)">
+
+ 
+ <table border=1 bordercolor=white width=100%	style="  background-color:#FF6238;    "> 
+  <tr> 
+   <td  style="  background-color:#FF6238;    ">
+   <button id="btnNumberGen" type="button"  onclick="PrintTable()" 
+   style ="
+     background-color: #4CAF50;  
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;"
+   
+     > Go</button> 
+</td> 
+
+<td   style="background-color:#053f5c;  border: 0px solid black;
+  border-radius: 16px;">
+ <font size=3 color=white > 	  Done</td> 
+ <td   style="background-color:#ff0000;  border: 0px solid black;
+  border-radius: 36px;" > <font color=yellow> <lable id="completed"> 0  </label> </font>
+
+ </td> 
+   <td   style="background-color:#0B5395;  border: 0px solid black;
+  border-radius: 16px;" >
+<font size=3 color=white >  ToGo</td> <td  width=10px  style="background-color:#800000;  border: 0px solid black;
+  border-radius: 36px;" > <font color=yellow> <lable id="to_go"> 0  </label> </font>
+</font>
+      
+   </td> <td width=4px > </td>
+     <td  style="  background-color:#006238;    ">    <div id="curr_num">   &nbsp; &nbsp; </div>
+  </td>
+ </tr>  
+</table>
+
+<table border=0 bordercolor=white width=100%	> 
+  <tr style=" height: 7px; line-height: 30px;">
+  <td  style="  background-color:#006238">
+   <button id="btnStartTheTimer" type="button"  onclick="StartStopTimer()"
+   
+    style ="
+     background-color: #ff6238;  
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;"
+   
+   > Auto Run </button> 
+  </td> 
+    
+     <td  style="  background-color:#ff6238"  > 
+        <label id="time_completed"  >   </label>
+     </td>  
+     
+      <td style="  background-color:#ff6238"  > 
+       <div id="timer_limit"  style="visibility: hidden"> 
+         <font size=2 color=yellow> Refresh Time</font> 
+         <input type="text" name="name"  id="txtTimerLimit" value=30 size=2 style="height:36px;font-size:12pt;"> </div > 
+   </td> 
+   
+      <td style="  background-color:#ff6238"  >
+<div id="pause_timer" style="visibility: hidden"> 
+    <font size=2 color=white>
+      <label id="autoRefrshStatus"> Auto Refresh On </label>
+	</font>
+	<label class="switch"> 
+      <input type="checkbox" onclick="PauseStartTimer()" id="chkPauseStartTimer" checked  >
+	  <span class="slider round">  </span>
+	</label>
+  </div>
+    </td> 
+   </tr>  
+</table>
+
+ 
+<table border=0 bordercolor=red width=100%	> 
+  
+ <tr> 
+   <td   style="  background-color:#81B2C3">  <div id="nums" width=100%  >   
+
+   </td>
+ </tr>  
+<table>
+ 
+
+<table id = "num_90" width=100% border=2 bordercolor=nsvy>
+	<tr class="row_attributes">
+	  <td class = "alt_cell_color">  0</td>
+	  <td class = "main_cell_color"> -</td>
+	  <td class = "alt_cell_color"> -</td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	</tr>
+	<tr class="row_attributes">
+	  <td class = "main_cell_color">  &nbsp;</td>
+	  <td class = "alt_cell_color"> &nbsp;</td>
+	  <td class = "main_cell_color"> &nbsp; </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	</tr>
+	<tr>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	</tr>
+	<tr>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	</tr>
+	<tr>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	</tr>
+	<tr>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	</tr>
+	<tr>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	</tr>
+	<tr>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	</tr>
+	<tr>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color"></td>
+	  <td class = "main_cell_color"> </td>
+	  <td class = "alt_cell_color">aaa</td>
+	  <td class = "main_cell_color"> 0</td>
+	</tr>
+</table>
+	
+</body>
+ 
+ 
