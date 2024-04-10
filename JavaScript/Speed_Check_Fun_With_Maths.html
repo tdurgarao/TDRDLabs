@@ -1,0 +1,480 @@
+<html>
+ <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+ <!--   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+ 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+ 
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+ 
+ 
+  </script>
+  -->
+   
+<style>
+ 
+ body{
+  box-sizing: border-box
+  border: 1px solid #ddd;
+}
+
+table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  wid th: 100%;
+  border: 0
+}
+
+table td, #customers th {
+  padding: 8px;
+}
+
+table tr:nth-child(odd){background-color: #f2f2f2;}
+
+ 
+durga 
+t able tr:hover {background-color: #ddd;}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #331763;
+  color: white;
+     height: 2px;
+     color: green;
+}
+
+td:first-child,
+th:first-child {
+  border-radius: 10px 0 0 10px;
+   height: 2px;
+     color: red;
+    
+}
+td:last-child,
+th:last-child {
+  border-radius: 0 10px 10px 0;
+   height: 2px;
+     color: blue;
+}
+ 
+ label.lbl_white_c {
+ font-family: Arial, Helvetica, sans-serif;
+  padding: 8px;
+  color: white;
+} 
+
+ label.lbl_yellow_c {
+ font-family: Arial, Helvetica, sans-serif;
+  padding: 8px;
+  color: yellow;
+} 
+ .label {
+ font-family: Arial, Helvetica, sans-serif;
+  padding: 8px;
+}
+
+</style>
+
+ 
+
+  
+<title> Check your speed </title>
+</head>
+
+<body onload="fnPageLoad()">
+<script>
+  
+  var intNoOfDigits , intQuestionCount =0   ,intCorrectAns = 0, intWrongAns =0, intNotAttempted=0    ;
+  var strEquation ="" , strHistory ="" ,  strRowBgColor;
+  var intDifficultLevel , intTotalScore = 0, intCurQuestionMarks;
+  var intMultiplyGeneratedCount ; 
+  
+  var v_timer_name , v_pause_timer=0, v_timer=0 ;
+  
+  const intLevel_01 = 2,  intLevel_02 = 5,  intLevel_03=10 ;
+  const arrMarks = [2, 5, 10];
+
+  const strAltRowColor ="", strNormalRowColor="";
+  const strTableStart = " <table cellspacing=0 cellpadding=0 border=1   bordercolor=red  width=100%>  " , strTableEnd ="  </table>", 
+  strTitleRow= "<tr  style='background-color:#b01513;  border: 0px solid black;'> <td widtd=10   align=middle ><b> <font color=ffffff size=2>Qno</font> </td> <td widtd=80> <b><font color=ffffff size=2>Question </td> <td widtd=20  align=center ><b><font color=ffffff size=2> Answer <br>Correct / Yours &nbsp;  </td>   <td widtd=40  align=right ><b><font color=ffffff size=2> Results (Marks) </td>  <td widtd=10  align=right ><b><font color=ffffff size=2> Total </td> </tr> "	 ;
+
+  var intQuestionEntered, intMarksEntered, intTimeEntered ;
+
+  let intSelectedDifficultLevel;
+  var arrUserMsg =["Try time taken and marks scored aaaaa ddddddd asdfasdfaf asf asdf   "
+                  ,"Try time taken and no of question anwserd  fffff  adfasdf "
+				  ,"Try no of questions answred and marks scored"];
+				  
+  var arrUserMsgClass =["btn-primary","btn-warning" , "btn-success"];
+ 
+  var arrUserMsgFont =["red","green" , "blue"];
+ 
+    function fnRadioButtonClicked(intRadioButtonValue) {
+   // alert(intRadioButtonValue);
+   intCurQuestionMarks  =arrMarks[ intRadioButtonValue - 2];
+  document.getElementById("marksForTheQuestion").innerHTML="<font color=white></font><b><font color=yellow>" + intCurQuestionMarks + " </font> </b> "; 
+  if (txtVal.value !=="") { fnGenerateEquation();}
+} 
+ 
+   function fnPageLoad() { 
+ 		intNoOfDigits =Math.floor(Math.random() *2  + 4);
+		 // alert(intNoOfDigits);
+		//str2print =   strGuess;
+		//document.getElementById("toGoDiv").innerHTML ="strGuess"; 
+
+    intCurQuestionMarks  =arrMarks[0];
+  document.getElementById("marksForTheQuestion").innerHTML="<font color=white></font><b><font color=yellow>" + intCurQuestionMarks + " </font> </b> "; 
+document.getElementById('question_Row').style='display:none;';
+
+ //document.getElementById("userMsg").classList.add(arrUserMsgClass[0]);
+ //document.getElementById("userMsg").classList.add(arrUserMsgClass[1]);
+ //document.getElementById("userMsg").classList.add(arrUserMsgClass[2]);
+
+  fnUserChoiceChange() ;
+ }
+    
+ function fnGenerateEquation( ){ 
+
+	let arrOperators =["+","-","*","/"];
+	let strCurOperator ="";
+	let i , intCurVal , intIndex4Operator, intConsiderDevideOperation = 0;
+  
+  if (optUserChoice.value ==1) 
+    { //alert(optUserChoice.value);
+	intQuestionEntered = userInput.value ; 
+ }
+	
+  if (optUserChoice.value ==2) 
+    {//alert(optUserChoice.value); 
+	intMarksEntered = userInput.value ;
+	}
+  
+  if   (optUserChoice.value ==3) 
+    {//	alert(optUserChoice.value); 
+	 intTimeEntered  = userInput.value ; 
+	 }
+	
+    document.getElementById("optUserChoice").disabled=true;
+    document.getElementById("userInput").disabled=true;
+  
+    //alert(optUserChoice.value);  
+  
+	strEquation ="";	
+   //Find the difficult_level selected by the user 
+  var rdbDifficultLevel = document.getElementsByName('difficult_level');
+    for (var rdbValueOfDifficultLevel of rdbDifficultLevel)
+    {
+        if (rdbValueOfDifficultLevel.checked) {
+            intSelectedDifficultLevel = rdbValueOfDifficultLevel.value ;
+        }
+    } 
+	 
+	intNoOfDigits=intSelectedDifficultLevel;
+	intMultiplyGeneratedCount = 0;
+	
+	for (i=1; i< 	intNoOfDigits ; i ++) {
+	
+  	//intIndex4Operator  = Math.floor(Math.random() *  (arrOperators.length - 2 + intConsiderDevideOperation) )+ 1; 
+		  intIndex4Operator  = Math.floor(Math.random() *  (intSelectedDifficultLevel -1) ) ; 
+
+		 strCurOperator =  arrOperators[intIndex4Operator];
+		 if (strCurOperator =="*") {
+		   intMultiplyGeneratedCount++;
+		 }
+		 
+		 if ( intMultiplyGeneratedCount ==0 && i == intNoOfDigits - 1 &&  intNoOfDigits ==4)
+		 {
+		    //alert (1);
+		   strCurOperator ="*";
+		 }
+	 	strEquation = strEquation + " " + (Math.floor(Math.random() * 10) + 1 )+ " " + strCurOperator  ;
+	}	
+		 //for hard, make sure to have one *
+// add timer, count questions
+//normal, 1 point, medium 2, hard 3 points
+//check box to accept enter key as answer or button press as answer
+
+	 	strEquation = strEquation + " " + (Math.floor(Math.random() * 10) + 1 )   ;
+
+	//txtVal.value = intSelectedDifficultLevel +"->"+intNoOfDigits + "->"+ strEquation +  "->" + eval(strEquation)      ;
+    //txtVal.value =   strEquation      ;
+			document.getElementById("txtVal").innerHTML = strEquation;  
+    
+	//x.style.display = "none";
+	document.getElementById('question_Row').style='display:table-row;';
+
+	document.getElementById("btn_generate_equation_td").style.display='none';
+	// operands 
+	//operators
+	//alert (result + "-a-"+ arrOperators );  
+	answer.focus()
+ }   
+ 
+function fnAnswerCheck() {
+    var strResults ="" ;
+	var intCurQuestionMarksGot; 
+	document.getElementById('answer').onkeypress = function(e){
+ 		 
+ //alert(strEquation);	
+		if (!e) e = window.event;
+		if (e.keyCode == '13'){
+		
+       if (strEquation===""){return;}		   
+	    
+		document.getElementById("no_of_questions").innerHTML ="<b>" + ++intQuestionCount +"</b>"; 
+		
+			if (intQuestionCount==1) { v_timer_name = setInterval(fnStartTimer,1000);	}
+			
+			//     alert(this.value) +"-"+ eval(strEquation);
+			if (this.value ==="") {
+			   	strResults ="Skip"; 
+				intCurQuestionMarksGot = 0;
+				intNotAttempted++;
+				}
+			else if (this.value == eval(strEquation)) {	  
+				strResults ="Right"; 
+				intCurQuestionMarksGot = intCurQuestionMarks;
+				intCorrectAns ++;
+			}
+			else  { 
+				strResults ="Wrong"; 
+				intCurQuestionMarksGot = 0;
+				intWrongAns ++;
+			}			
+			
+ 		    //if (intQuestionCount%2) {strRowBgColor ="";}
+			//else {strRowBgColor =" bgcolor = " + strAltRowColor;}		    
+		  
+		    intTotalScore = intTotalScore + intCurQuestionMarksGot;
+	        strHistory =  "<tr " + strRowBgColor +  " style='font-size:12px'> <td width=10   align=middle > "+ intQuestionCount+" &nbsp;</td> <td width=80> " + strEquation +" </td> <td width=20  align=center >"+ eval(strEquation) +"/"+ this.value + "</td> <td width=40  align=right >" +  strResults +"  ("+intCurQuestionMarksGot +") </td> <td width=10  align=right > " + intTotalScore + "</td>  </tr> "	 + strHistory;
+			
+			document.getElementById("historyDataDiv").innerHTML =strTableStart +strTitleRow+ " " + strHistory + "" + strTableEnd;
+//txtValssss.value = strTableStart +strTitleRow+ " " + strHistory + "" + strTableEnd;
+ 	          document.getElementById("right_ans").innerHTML = "<b>" + intCorrectAns +"</b>";
+  	          document.getElementById("wrong_ans").innerHTML = "<b>" + intWrongAns +"</b>";
+ 	          document.getElementById("not_attempted").innerHTML = "<b>" + intNotAttempted +"</b>";
+ 	          document.getElementById("the_score").innerHTML = "<b>  " + intTotalScore +"  </b>";
+	
+  //alert( intMarksEntered+ "-"+  intMarksEntered +"-"+   intTotalScore);	
+ 
+			   if (intQuestionEntered ==intQuestionCount )  
+			   { 
+			     alert("Reached Questions Limit");
+   			     clearInterval(v_timer_name );
+				 document.getElementById('question_Row').style='display:none;';
+
+
+			   }
+             else 
+			   if  ( intMarksEntered!= "" && intMarksEntered <=  intTotalScore ) 
+			   { 
+			     alert("Reached Marks Limit");
+   			     clearInterval(v_timer_name );
+				 document.getElementById('question_Row').style='display:none;';
+
+			   }
+			else  {
+			this.value ="";
+			fnGenerateEquation();
+			return false;
+	      }
+		}		
+	}
+}
+
+function fnStartTimer() 
+	  {  //alert(1);
+        if (v_pause_timer==1) { }
+        else  
+		  {		
+  	      //  if (v_timer >= document.getElementById("txtTimerLimit").value)
+		 //     { 
+		 //       v_timer = 0; 
+         //       PrintTable();
+	     //     }
+               v_timer = v_timer + 1;
+ 	          document.getElementById("time_completed").innerHTML = "<b>" + v_timer +"</b>";
+			if ( intTimeEntered ==  v_timer ) { 
+			  alert('Time Up');
+			  clearInterval(v_timer_name );
+			  document.getElementById('question_Row').style='display:none;';
+}
+	      }
+      }
+	  
+function fnUserChoiceChange() { 
+  //alert(optUserChoice.value );
+  	          document.getElementById("userMsg").innerHTML = "<font  color=" + arrUserMsgFont[optUserChoice.value  -1]  + " red> " + arrUserMsg[optUserChoice.value  -1] +  "</font>";
+			  
+			  //document.getElementById("userMsg").className(arrUserMsgClass[optUserChoice.value  -1]);
+ //document.getElementById("userMsg").classList.toggle(arrUserMsgClass[optUserChoice.value  -1]);
+ 	          //document.getElementById("userMsg").className.replace(arrUserMsgClass[optUserChoice.value  -1]);
+
+if (optUserChoice.value==1){userInput.value =30;}
+if (optUserChoice.value==2){userInput.value =100;}
+if (optUserChoice.value==3){userInput.value =60;}
+
+}
+
+  </script>
+  
+ <table border=0 bordercolor=blue   width=100%> 
+ <tr align="center" hidden>
+    <td    >  Headering
+	</td>
+  </tr> 
+  
+ 
+ <tr align="center" >
+    <td style=" background-color: #0B5395;  "  >  <table> <tr> <td  > Game Type
+ <select name="optUserChoice" id="optUserChoice"  onchange="fnUserChoiceChange()" >
+    <option value="1">No of Questions</option>
+    <option value="2">Target Marks</option>
+    <option value="3">Time Limit(Sec)</option>
+ 
+  </select>
+ <input id="userInput"     size="4"   class="" /> 
+ 
+	</td> </tr> </table>  	</td> </tr>  <tr> 
+	<td  
+	style=" background-color: #ffffff;   "	>  
+ <table border=0 bordercolor=red  <tr align="center" >
+	<td style="background-color:#053f5c;  border: 0px solid black;  border-radius: 6px;">
+			<input type="radio" id="difficult_level_01" name="difficult_level" value="2" checked  onclick="fnRadioButtonClicked(2)" >
+			<label for="difficult_level_01" class="lbl_white_c">  Easy  </label> 
+			</td> 
+			<td style="background-color:#82695E;  border: 0px solid black;
+  border-radius: 6px;">
+			<input type="radio" id="difficult_level_02" name="difficult_level" value="3"  onclick="fnRadioButtonClicked(3)">
+			<label for="difficult_level_02"  class="lbl_yellow_c"  >			 Medium    </label>  
+			</td>  
+			
+			<td style="background-color:#b01513;  border: 0px solid black;
+  border-radius: 6px;">
+			<input type="radio" id="difficult_level_03" name="difficult_level" value="4"  onclick="fnRadioButtonClicked(4)">
+			<label for="difficult_level_03"  class="lbl_white_c"  >			 			Hard    </label>  
+          </td> <td  style="background-color:#000000;  border: 0px solid black;  border-radius: 36px;"> 
+
+           <label id="marksForTheQuestion"  class=""   > </label>
+    </td></tr>
+    <tr id= "btn_generate_equation_td"  align="center"  >
+     <td colspan=4> <center>
+		   <input type = "button" id="btn_generate_equation"  onclick = "fnGenerateEquation()" value = "Click here to Start" class=""/>
+	<center></td> </tr>
+    
+    
+     </table>   	</td>
+  </tr> 
+
+  
+  <tr align="center"  hidden  >
+    <td   >  
+	
+	<label id="userMsg"  class=""   > </label>
+ 	</td> </tr> 
+     
+      <tr hidden > 
+	<td   >    <label id="marksForTheQuestion1"  class=""   > </label>
+
+		   <input type = "button" id="btn_generate_equation1"  onclick = "fnGenerateEquation()" value = "Click here to Start" class=""/>
+
+ 	</td>
+  </tr> 
+ 
+ 
+  
+  <tr align="center" >
+    <td 
+	style=" background-color: #B6A29A;  "
+	  >  <center>  
+	<table border=1 bordercolor=red> <tr> <td style="background-color:#9D280B;  border: 0px solid black;
+  border-radius: 6px;"> 
+			
+			<label class="lbl_white_c"  > Right 
+				   <lable id="right_ans"> 0  </lable> 		  </label>
+</td>  
+ 
+
+<td  style="background-color:#002060;  border: 0px solid black;
+  border-radius: 6px;" > 					 
+			      <label class="lbl_yellow_c"   > Wrong 
+				  <lable id="wrong_ans"> 0  </lable>	</label>
+			</td>
+ 
+
+			<td style="background-color:#204A31;  border: 0px solid black;
+  border-radius: 6px;">      
+
+				 <label class="lbl_white_c"   > Skip
+                   <lable id="not_attempted"> 0  </lable>					 </label>
+</td> </tr> </table>
+</center>
+
+	</td></tr>  <tr> 
+	<td   
+	style=" background-color: #A3CEED; 
+   background-image: conic-gradient(#D2EFFA, #ffffff,#A3CEED,#ffffff,#A8ECEF ,#ffffff);"
+	 >   <center> 
+	<table border=1 bordercolor=red> <tr> <td style="background-color:#162C34;  border: 0px solid black;
+  border-radius: 6px;"> 
+			
+		  <label class="lbl_yellow_c" >  Question   
+	   <lable id="no_of_questions"> 0  </lable> 		  </label>		
+			</td> <td style="background-color:#FF5E00;  border: 0px solid black;
+  border-radius: 6px;"> 
+
+	  <label class="lbl_white_c "   > Time 
+	   <lable id="time_completed" > 0  </lable></label>		
+	   </td> <td style="background-color:#4E3629;  border: 0px solid black;
+  border-radius: 6px;"> 
+	  <label class=" lbl_yellow_c"  > Score 
+		 <lable id="the_score"> <font size=3> 0 </font> </lable>		  </label>
+</td> </tr> </table> </center> 
+
+	</td>
+  </tr> 
+  
+  
+		<tr id="question_Row" align="center"   style="height:72px"		>          
+		  <td  colspan=2 >         
+
+   Solve <label class=" "   id="txtVal"  >   				   </label>	=
+				   
+ 		  <input id="answer"   onkeypress="fnAnswerCheck()"  size="6"   class="text-success" />   </td>         
+ 
+ 
+		</tr>
+  
+  <tr align="center" hidden>
+    <td   >  bbbbbbbbbbbb 	</td>
+   </tr> 
+ 
+ 
+  <tr align="center" hidden>
+    <td   >  bbbbbbbbbbbb 	</td>
+   </tr> 
+  
+  <tr>
+ 
+    <td  colspan=2>
+	  
+		  <!-if the output to be dispalyd within the top table then get below div    id="historyDataDiv" here   -> 
+ 
+        
+	</td>
+  </tr>
+</table> 
+  <div id="historyDataDiv" class=" " style="overflow: auto; width:100%;    height:270; " ></div>
+</body>
+</html>
