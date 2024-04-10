@@ -1,0 +1,294 @@
+<html>
+ <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+  <!-- link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"  -->
+  <!-- script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script -->
+  <!-- script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script-->
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<title> Check your speed </title>
+</head>
+
+<body onload="generateTable()">
+
+
+ 
+ 
+<script>
+
+ //source arary with sequence numbers 
+ var arrSourceNum =[]; // =[1,2,3,4,5,6];
+ var arrSuffledNum=[];  //new array that contains the suffled values
+ var arrDoneNum=[] , arrNum2PrintOnBtn=[], arrNum2Check=[];
+ var intCounter = 0, myTimeInterval  ;  //to loop thur the array when the items buttons are clicked
+ var intValue2Disp =0, intRows, intColumns;
+ var str2prefix, intSuffleOrSeq , intTimeLapsed=0;
+ var strFontWhiteFour = "<font size=4 color=white>";
+ var strFontYellowFour = "<font size=4 color=yellow>";
+ var strDone ="<strong>" + strFontYellowFour + " Done:</font></strong>";
+ var strToGo = "<strong>" + strFontWhiteFour + " ToGo:</font></strong>";
+ var strCompleted = "<strong>" +  strFontWhiteFour + " Completed</font></strong>";
+ var strClickNumInSeq = "<strong>"+  strFontYellowFour+ "Click in sequence starting from 00:</font></strong>";
+ var strFontWhiteSix ="<font size=6 color=white>" ;
+ 
+
+ function fnCheckDevice () {
+  /* Storing user's device details in a variable*/
+      let details = navigator.userAgent;
+      var strType;     
+      /* Creating a regular expression
+      containing some mobile devices keywords
+      to search it in details string*/
+      let regexp = /android|iphone|kindle|ipad/i;
+      
+      /* Using test() method to search regexp in details
+      it returns boolean value*/
+      let isMobileDevice = regexp.test(details);
+      
+      if (isMobileDevice) {
+        // document.write("<h3>Its a Mobile Device !</h3>");
+        strType ="M";
+      } else {
+         //document.write("<h3>Its a Desktop !</h3>");
+         strType="D";
+      }
+      return strType;
+
+}
+
+
+
+  
+ //this function will be called when the button is pressed with the pressed button
+ //from the passed button, get the value of the button. compare with the current value to be clicked
+ //if same then the user clicked the correct value. disable the button and increment counter
+ function  performButtonClick (   e ){
+     var newBtn = document.getElementById(e);
+	 //      //alert   ( newBtn.getAttribute("id"));
+
+	 //alert(document.getElementById(e).id) ;
+
+
+      //alert(arrNum2Check[intCounter] + "aaa" + e.innerText);
+    if (arrNum2Check[intCounter]== e.innerText) {  //correct value clicked
+	 //alert( "aaa"+e.innerText);
+	 //document.getElementById("myBtn").disabled = true;
+
+     //document.getElementById("doneDiv").innerHTML = document.getElementById("doneDiv").innerHTML +" " +e.innerText ;
+      if (intCounter== (intRows * intColumns ) -1 ) {
+	    document.getElementById("toGoDiv").innerHTML = strCompleted +  "";
+        clearInterval(myTimeInterval );
+      }
+      else {	
+	    if (   intSuffleOrSeq % 2==0  )   {
+		  document.getElementById("toGoDiv").innerHTML = strToGo +  strFontYellowFour +  arrNum2Check.slice( intCounter +1) +"</font>";
+		}
+		else 
+		{      		     
+		  document.getElementById("toGoDiv").innerHTML  =strClickNumInSeq;
+        }
+      }
+	
+  	  //get the clicked elements arrary here. 
+	  arrDoneNum = arrNum2Check.slice(  0, intCounter + 1);
+	  //print the array in reverse order 
+	  document.getElementById("doneDiv").innerHTML  =strDone + strFontWhiteFour + arrDoneNum.reverse() +"</font>";
+
+      e.disabled = true;          //---working
+	  e.innerText= "*!*"   ;           //---working  
+	  e.style="background-color:#ADD8E6;color:#ADD8E6";
+	 // document.getElementById('question_Row').style='display:none;';
+      //e.style.display = 'none';   //---working
+	  if  (intCounter==0) {  
+       //  document.getElementById("timeCompleted").innerHTML = "<strong>Time:"+ ++intTimeLapsed + "</strong>";
+         document.getElementById("timeCompleted").innerHTML =  strFontWhiteSix +  ++intTimeLapsed + "  </font>  " ;
+      
+	  myTimeInterval  = setInterval(startTimer,1000);	
+      }
+      intCounter++;
+	  
+	}  
+  }
+
+
+	function startTimer() 
+	  {  
+      //   document.getElementById("timeCompleted").innerHTML = "<strong>Time:"+ ++intTimeLapsed + "</strong>";
+         document.getElementById("timeCompleted").innerHTML = strFontWhiteSix +  ++intTimeLapsed + "  </font>  " ;
+      }
+	  
+  
+  //suffle the array 
+  function shuffleArray(array) {
+   for (var i = array.length - 1; i > 0; i--) { 
+  
+       // Generate random number 
+       var j = Math.floor(Math.random() * (i + 1));
+                  
+       var temp = array[i];
+       array[i] = array[j];
+       array[j] = temp;
+    }      
+    return array;
+  }
+  
+  function generateTable() {
+ 
+
+   var strDeviceType = fnCheckDevice();
+   
+
+   //let   x =[];
+   intSuffleOrSeq = Math.floor((Math.random() *10) + 1); 
+
+
+   intRows =Math.floor(Math.random() * (10 - 2)  + 2);
+   intColumns   =Math.floor(Math.random() * (10 - 2)  + 2);
+ 
+   //alert(intColumns +"-"+intRows);
+ 
+ //  intRows = 2;
+ //  intColumns =3 ; 
+ //  intSuffleOrSeq=10 ;
+
+
+   
+    if (strDeviceType =="M") {
+ 
+intColumns = Math.min(intColumns,8 ) ;
+
+
+    }
+
+     for (var  a = 0; a <  intRows * intColumns  ; a++) {
+       //alert(a);
+       if (a<10) { str2prefix ="0" } else {str2prefix="";}
+	   
+	   arrSuffledNum[a ]= (str2prefix + a) ;  
+	   arrSourceNum[a ]= (str2prefix + a) ;   
+      }      
+	   
+ 
+   //suffle the arry
+   arrSuffledNum = shuffleArray(arrSuffledNum);
+   
+   if ( intSuffleOrSeq % 2==0  )  {  //even means sequence numbers to show 
+
+     arrNum2PrintOnBtn=arrSourceNum ;
+     arrNum2Check=arrSuffledNum;      
+     document.getElementById("toGoDiv").innerHTML  =  strToGo + strFontWhiteFour + arrNum2Check +"</font>";
+
+     //  document.getElementById("a").innerHTML =  "arrNum2PrintOnBtn:"+ arrNum2PrintOnBtn +"--<br><br>-arrNum2Check:"+ arrNum2Check;
+     document.getElementById("doneDiv").innerHTML  =strDone ;	 
+	 }	
+   else {
+     arrNum2PrintOnBtn=arrSuffledNum;
+     arrNum2Check=arrSourceNum;
+	 
+     document.getElementById("toGoDiv").innerHTML  =strClickNumInSeq ;
+
+     //  document.getElementById("a").innerHTML =  "arrNum2PrintOnBtn:"+ arrNum2PrintOnBtn +"--<br><br>-arrNum2Check:"+ arrNum2Check;
+     //document.getElementById("doneDiv").innerHTML  ="<strong>Done:</strong>";	 
+	 
+	   doneDiv.style.display = "none";
+
+   }
+    
+
+
+   //creates a <table> element and a <tbody> element
+  
+     document.getElementById("printTable").innerHTML =   
+	 "<table   border=0 bordercolor=red  >   <tr>     <td   >  </td>      <td  >         <table id = tbl2print  border=1 bordercolor=silver  > 	    <tr><td   >  </td> </tr>  	  </table>    </td>     <td  	>  </td>    </tr> </table> ";
+	 
+     let tbl = document.getElementById ('tbl2print');
+
+  //const tbl = document.createElement("table");
+  //const tblBody = document.createElement("tbody");
+
+  // creating all cells
+  for (let i = 0; i < intRows  ; i++) {
+    // creates a table row
+    const row = document.createElement("tr");
+
+    for (let j = 0; j < intColumns; j++) {
+      // Create a <td> element and a text node, make the text
+      // node the contents of the <td>, and put the <td> at
+      // the end of the table row
+      const cell = document.createElement("td");
+      let newBtn = document.createElement('lable');
+     // newBtn.innerText=arrNum2Check[intValue2Disp ] ; // "0"+intValue2Disp  ;
+      
+ 
+	  	  newBtn.innerText=arrNum2PrintOnBtn[intValue2Disp ] ; // "0"+intValue2Disp  ;
+ 	  intValue2Disp++; //i + "-" +j;
+	  //newBtn.setAttribute("id","aaa0"+intValue2Disp);
+      //alert   ( newBtn.getAttribute("id"));
+      newBtn.setAttribute("onClick","performButtonClick( this)");
+      newBtn.setAttribute("class","btn btn-primary btn-lg" );
+      // newBtn.setAttribute("fontSize","100px");
+
+  // document.getElementById(newBtn).style.fontSize = "xx-large";
+       //const cellText = document.createTextNode(`cell in row ${i}, column ${j}`);
+	  //const cellText = document.createTextNode(`<p> aaa </p>`);
+      cell.appendChild(newBtn);
+      row.appendChild(cell);
+    }
+
+    // add the row to the end of the table body
+    tbl.appendChild(row);
+  }
+
+  // put the <tbody> in the <table>
+  tbl.appendChild(tbl);
+  // appends <table> into <body>
+  document.body.appendChild(tbl);
+  // sets the border attribute of tbl to '2'
+  tbl.setAttribute("border", "2");
+  
+           document.getElementById("timeCompleted").innerHTML = strFontWhiteSix +  ++intTimeLapsed + "  </font>  " ;
+
+
+
+}
+</script>
+
+  
+
+
+ <div style=" overflow-x:auto; wid th: 450px;"> 
+
+ <table width=100px border=0 bordercolor=white> 
+ <tr >
+   <td  style="background-color:#FF6900;  border: 0px solid black;  border-radius: 6px;" rowspan=2> 
+<lable id="timeCompleted"> <font size=4 color=white> 0 </font> </lable>	
+   </td> 
+<td  style="background-color:#053f5c; border: 0px solid black;  border-radius: 0px;" NOWRAP ><left>  
+  <lable id="toGoDiv"  style=" width:100%  ; size:3 ;color:#ffff00">    00  </font> </lable>	 </left> 	  </td>       
+    </tr>		 
+<tr>
+
+<td style="background-color:#f53f5c;  border: 1px solid black;
+  border-radius: 0px;"><left>   
+  <lable id="doneDiv"  style=" size:4 ;color:#ffff00">    00  </font> </lable>	 </left> 	  </td>
+       
+    </tr>		
+        </table>
+ </div>
+ 
+<table borde r=2 bordercolo r=red>   
+   <tr> 
+	  <td> <center> <div id="printTable"  >   </div></center>
+	  </td> 
+  </tr>  
+</table>
+
+</body>
+</html>
+ 
